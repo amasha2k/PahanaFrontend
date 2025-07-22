@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order - Bookshop Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .dashboard { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 250px;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header h2 { margin: 0; display: flex; align-items: center; }
+        .sidebar-header h2 i { margin-right: 10px; color: #4fc3f7; }
+        .nav-menu { list-style: none; padding: 0; margin: 20px 0; }
+        .nav-item { margin-bottom: 5px; }
+        .nav-link { display: flex; align-items: center; padding: 12px 20px; color: white; text-decoration: none; transition: all 0.3s; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(255,255,255,0.1); border-left: 4px solid #4fc3f7; }
+        .nav-link i { margin-right: 10px; width: 20px; text-align: center; }
+        .main-content { flex: 1; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #ddd; }
+        .page-title h1 { margin: 0; color: #166088; }
+        .user-info { display: flex; align-items: center; }
+        .user-info img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+        .form-container { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 32px; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #2c3e50; }
+        input[type="text"], input[type="number"], input[type="datetime-local"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="datetime-local"]:focus, select:focus { border-color: #3498db; outline: none; box-shadow: 0 0 5px rgba(52, 152, 219, 0.2); }
+        .btn { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; display: block; width: 100%; margin-top: 20px; }
+        .btn:hover { background-color: #2980b9; }
+        .search-select { position: relative; }
+        .search-select input { padding-right: 30px; }
+        .search-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-top: none; max-height: 180px; overflow-y: auto; z-index: 10; border-radius: 0 0 4px 4px; }
+        .search-option { padding: 10px; cursor: pointer; transition: background 0.2s; }
+        .search-option:hover { background: #f0f4fa; }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-book"></i> BookShop Pro</h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="add-customer.html" class="nav-link"><i class="fas fa-user-plus"></i> Add Customer</a></li>
+            <li class="nav-item"><a href="manage-customers.html" class="nav-link"><i class="fas fa-users-cog"></i> Manage Customers</a></li>
+            <li class="nav-item"><a href="add-item.html" class="nav-link"><i class="fas fa-book-medical"></i> Add Items</a></li>
+            <li class="nav-item"><a href="manage-items.html" class="nav-link"><i class="fas fa-book-open"></i> Manage Items</a></li>
+            <li class="nav-item"><a href="add-order.html" class="nav-link active"><i class="fas fa-cart-plus"></i> Add Order</a></li>
+            <li class="nav-item"><a href="manage-orders.html" class="nav-link"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
+            <li class="nav-item"><a href="manage-orders.html" class="nav-link"><i class="fas fa-chart-line"></i> Reports</a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </div>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <div class="page-title">
+                <h1><i class="fas fa-cart-plus"></i> Add Order</h1>
+            </div>
+            <div class="user-info">
+                <img src="https://via.placeholder.com/40" alt="User">
+                <span>Admin User</span>
+            </div>
+        </div>
+        <div class="form-container">
+            <form id="addOrderForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="customerId">Customer</label>
+                    <select id="customerId" name="customerId" required>
+                        <option value="">Select a customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemId">Item</label>
+                    <select id="itemId" name="itemId" required>
+                        <option value="">Select an item</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" name="price" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="discount">Discount</label>
+                    <input type="number" id="discount" name="discount" min="0" step="0.01" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="orderDate">Order Date</label>
+                    <input type="datetime-local" id="orderDate" name="orderDate" required>
+                </div>
+                <button type="submit" class="btn">Add Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="api.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+function showToast(message, type = "success") {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === "success" ? "#28a745" : "#dc3545",
+        close: true,
+        stopOnFocus: true
+    }).showToast();
+}
+
+const API_ORDERS = `${API_BASE_URL}/api/orders`;
+const API_ITEMS = `${API_BASE_URL}/api/items`;
+
+async function populateDropdowns() {
+    // Populate customers
+    try {
+        const response = await fetch(API_CUSTOMERS);
+        if (response.ok) {
+            const customers = await response.json();
+            const customerSelect = document.getElementById('customerId');
+            customers.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c.id;
+                option.textContent = `${c.name} (${c.accountNumber})`;
+                customerSelect.appendChild(option);
+            });
+        }
+    } catch {}
+    // Populate items
+    try {
+        const response = await fetch(API_ITEMS);
+        if (response.ok) {
+            const items = await response.json();
+            const itemSelect = document.getElementById('itemId');
+            items.forEach(i => {
+                const option = document.createElement('option');
+                option.value = i.id;
+                option.textContent = `${i.name} (${i.description})`;
+                option.setAttribute('data-price', i.price);
+                itemSelect.appendChild(option);
+            });
+        }
+    } catch {}
+}
+
+document.getElementById('itemId').addEventListener('change', function() {
+    const selected = this.options[this.selectedIndex];
+    const price = selected.getAttribute('data-price');
+    if (price) {
+        document.getElementById('price').value = price;
+    }
+});
+
+document.getElementById('addOrderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const order = {
+        customerId: parseInt(document.getElementById('customerId').value, 10),
+        itemId: parseInt(document.getElementById('itemId').value, 10),
+        quantity: parseInt(document.getElementById('quantity').value, 10),
+        price: parseFloat(document.getElementById('price').value),
+        discount: parseFloat(document.getElementById('discount').value),
+        orderDate: new Date(document.getElementById('orderDate').value).toISOString()
+    };
+    if (!order.customerId || !order.itemId) {
+        showToast('Please select a customer and an item.', 'error');
+        return;
+    }
+    try {
+        const response = await fetch(API_ORDERS, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(order)
+        });
+        if (response.ok) {
+            showToast('Order added successfully!', 'success');
+            document.getElementById('addOrderForm').reset();
+        } else {
+            const errorData = await response.json();
+            showToast(errorData.message || 'Failed to add order.', 'error');
+        }
+    } catch (err) {
+        showToast('Network error. Please try again later.', 'error');
+    }
+});
+
+window.addEventListener('DOMContentLoaded', populateDropdowns);
+</script>
+</body>
+</html> 

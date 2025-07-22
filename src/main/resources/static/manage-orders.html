@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders - Bookshop Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .dashboard { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 250px;
+            background-color: #4a6fa5;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header h2 { margin: 0; display: flex; align-items: center; }
+        .sidebar-header h2 i { margin-right: 10px; color: #4fc3f7; }
+        .nav-menu { list-style: none; padding: 0; margin: 20px 0; }
+        .nav-item { margin-bottom: 5px; }
+        .nav-link { display: flex; align-items: center; padding: 12px 20px; color: white; text-decoration: none; transition: all 0.3s; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(255,255,255,0.1); border-left: 4px solid #4fc3f7; }
+        .nav-link i { margin-right: 10px; width: 20px; text-align: center; }
+        .main-content { flex: 1; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #ddd; }
+        .page-title h1 { margin: 0; color: #166088; }
+        .user-info { display: flex; align-items: center; }
+        .user-info img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+        .orders-table-container { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 24px; max-width: 1200px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px 5px; text-align: left; }
+        th { background: #4a6fa5; color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8f9fa; }
+        tr:hover { background: #e3eaf6; }
+        .no-data { text-align: center; color: #888; padding: 30px 0; font-size: 1.1rem; }
+        .action-btn { background: #166088; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; margin-right: 6px; transition: background 0.2s; }
+        .action-btn:hover { background: #4a6fa5; }
+        .no-data { text-align: center; color: #888; padding: 30px 0; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-book"></i> BookShop Pro</h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="add-customer.html" class="nav-link"><i class="fas fa-user-plus"></i> Add Customer</a></li>
+            <li class="nav-item"><a href="manage-customers.html" class="nav-link"><i class="fas fa-users-cog"></i> Manage Customers</a></li>
+            <li class="nav-item"><a href="add-item.html" class="nav-link"><i class="fas fa-book-medical"></i> Add Items</a></li>
+            <li class="nav-item"><a href="manage-items.html" class="nav-link"><i class="fas fa-book-open"></i> Manage Items</a></li>
+            <li class="nav-item"><a href="add-order.html" class="nav-link"><i class="fas fa-cart-plus"></i> Add Order</a></li>
+            <li class="nav-item"><a href="manage-orders.html" class="nav-link active"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-chart-line"></i> Reports</a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </div>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <div class="page-title">
+                <h1><i class="fas fa-clipboard-list"></i> Manage Orders</h1>
+            </div>
+            <div class="user-info">
+                <img src="https://via.placeholder.com/40" alt="User">
+                <span>Admin User</span>
+            </div>
+        </div>
+        <div class="orders-table-container">
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                        <th>Order Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <tr><td colspan="9" class="no-data">Loading orders...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Edit Modal -->
+<div id="editModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:white;padding:30px 24px;border-radius:8px;max-width:500px;width:100%;margin:auto;position:relative;">
+        <h2 style="margin-top:0;color:#166088;margin-bottom:20px;">Edit Order</h2>
+        <form id="editOrderForm">
+            <input type="hidden" id="editOrderId">
+            <div style="margin-bottom:15px;">
+                <label for="editCustomerId" style="font-weight:600;">Customer</label>
+                <select id="editCustomerId" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;"></select>
+            </div>
+            <div style="margin-bottom:15px;">
+                <label for="editItemId" style="font-weight:600;">Item</label>
+                <select id="editItemId" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;"></select>
+            </div>
+            <div style="margin-bottom:15px;">
+                <label for="editQuantity" style="font-weight:600;">Quantity</label>
+                <input type="number" id="editQuantity" min="1" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            </div>
+            <div style="margin-bottom:15px;">
+                <label for="editPrice" style="font-weight:600;">Price</label>
+                <input type="number" id="editPrice" min="0" step="0.01" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            </div>
+            <div style="margin-bottom:15px;">
+                <label for="editDiscount" style="font-weight:600;">Discount</label>
+                <input type="number" id="editDiscount" min="0" step="0.01" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            </div>
+            <div style="margin-bottom:15px;">
+                <label for="editOrderDate" style="font-weight:600;">Order Date</label>
+                <input type="datetime-local" id="editOrderDate" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;">
+                <button type="button" onclick="closeEditModal()" class="action-btn" style="background:#888;">Cancel</button>
+                <button type="submit" class="action-btn" style="background:#28a745;">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:white;padding:30px 24px;border-radius:8px;max-width:350px;width:100%;margin:auto;position:relative;text-align:center;">
+        <h2 style="color:#dc3545;margin-bottom:20px;">Delete Order</h2>
+        <p>Are you sure you want to delete this order?</p>
+        <div style="display:flex;justify-content:center;gap:10px;margin-top:20px;">
+            <button type="button" onclick="closeDeleteModal()" class="action-btn" style="background:#888;">Cancel</button>
+            <button type="button" id="confirmDeleteBtn" class="action-btn" style="background:#dc3545;">Delete</button>
+        </div>
+    </div>
+</div>
+<script src="api.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+function showToast(message, type = "success") {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === "success" ? "#28a745" : "#dc3545",
+        close: true,
+        stopOnFocus: true
+    }).showToast();
+}
+
+const API_ORDERS = `${API_BASE_URL}/api/orders`;
+
+let ordersCache = [];
+let customersCache = [];
+let itemsCache = [];
+
+async function fetchCustomersAndItems() {
+    // Fetch customers
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/customers`);
+        if (response.ok) customersCache = await response.json();
+    } catch {}
+    // Fetch items
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/items`);
+        if (response.ok) itemsCache = await response.json();
+    } catch {}
+}
+
+async function fetchOrders() {
+    const tableBody = document.getElementById('ordersTableBody');
+    tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Loading orders...</td></tr>';
+    try {
+        const response = await fetch(API_ORDERS);
+        if (response.ok) {
+            const orders = await response.json();
+            ordersCache = orders;
+            if (orders.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="9" class="no-data">No orders found.</td></tr>';
+                return;
+            }
+            tableBody.innerHTML = '';
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customer ? order.customer.name + ' (' + order.customer.accountNumber + ')' : '-'}</td>
+                    <td>${order.item ? order.item.name + ' (' + order.item.description + ')' : '-'}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.price.toFixed(2)}</td>
+                    <td>${order.discount.toFixed(2)}</td>
+                    <td>${order.total.toFixed(2)}</td>
+                    <td>${new Date(order.orderDate).toLocaleString()}</td>
+                    <td>
+                        <button class="action-btn edit" onclick="openEditModal(${order.id})"><i class="fas fa-pen"></i> Edit</button>
+                        <button class="action-btn delete" style="background:#dc3545" onclick="openDeleteModal(${order.id})"><i class="fas fa-trash"></i> Delete</button>
+                        <button class="action-btn" style="background:linear-gradient(90deg,#4fc3f7 0%,#43e97b 100%);color:#fff;" onclick="printBill(${order.id})"><i class='fas fa-print'></i> Print Bill</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            showToast('Failed to fetch orders.', 'error');
+            tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Failed to load orders.</td></tr>';
+        }
+    } catch (err) {
+        showToast('Network error. Please try again later.', 'error');
+        tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Network error.</td></tr>';
+    }
+}
+
+function openEditModal(id) {
+    const order = ordersCache.find(o => o.id === id);
+    if (!order) return;
+    // Populate dropdowns
+    const customerSelect = document.getElementById('editCustomerId');
+    customerSelect.innerHTML = '<option value="">Select a customer</option>';
+    customersCache.forEach(c => {
+        const option = document.createElement('option');
+        option.value = c.id;
+        option.textContent = `${c.name} (${c.accountNumber})`;
+        if (order.customer && c.id === order.customer.id) option.selected = true;
+        customerSelect.appendChild(option);
+    });
+    const itemSelect = document.getElementById('editItemId');
+    itemSelect.innerHTML = '<option value="">Select an item</option>';
+    itemsCache.forEach(i => {
+        const option = document.createElement('option');
+        option.value = i.id;
+        option.textContent = `${i.name} (${i.description})`;
+        if (order.item && i.id === order.item.id) option.selected = true;
+        itemSelect.appendChild(option);
+    });
+    document.getElementById('editOrderId').value = order.id;
+    document.getElementById('editQuantity').value = order.quantity;
+    document.getElementById('editPrice').value = order.price;
+    document.getElementById('editDiscount').value = order.discount;
+    document.getElementById('editOrderDate').value = order.orderDate ? order.orderDate.slice(0, 16) : '';
+    document.getElementById('editModal').style.display = 'flex';
+}
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+document.getElementById('editOrderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('editOrderId').value;
+    const updatedOrder = {
+        customerId: parseInt(document.getElementById('editCustomerId').value, 10),
+        itemId: parseInt(document.getElementById('editItemId').value, 10),
+        quantity: parseInt(document.getElementById('editQuantity').value, 10),
+        price: parseFloat(document.getElementById('editPrice').value),
+        discount: parseFloat(document.getElementById('editDiscount').value),
+        orderDate: new Date(document.getElementById('editOrderDate').value).toISOString()
+    };
+    try {
+        const response = await fetch(`${API_ORDERS}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedOrder)
+        });
+        if (response.ok) {
+            showToast('Order updated successfully!', 'success');
+            closeEditModal();
+            fetchOrders();
+        } else {
+            const errorData = await response.json();
+            showToast(errorData.message || 'Failed to update order.', 'error');
+        }
+    } catch (err) {
+        showToast('Network error. Please try again later.', 'error');
+    }
+});
+
+let deleteOrderId = null;
+function openDeleteModal(id) {
+    deleteOrderId = id;
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    deleteOrderId = null;
+}
+document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+    if (!deleteOrderId) return;
+    try {
+        const response = await fetch(`${API_ORDERS}/${deleteOrderId}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            showToast('Order deleted successfully!', 'success');
+            closeDeleteModal();
+            fetchOrders();
+        } else {
+            showToast('Failed to delete order.', 'error');
+        }
+    } catch (err) {
+        showToast('Network error. Please try again later.', 'error');
+    }
+});
+
+function printBill(orderId) {
+    const order = ordersCache.find(o => o.id === orderId);
+    if (!order) return;
+    const billWindow = window.open('', '', 'width=600,height=700');
+    billWindow.document.write(`
+        <html>
+        <head>
+            <title>Order Bill #${order.id}</title>
+            <style>
+                body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; color: #222; }
+                .bill-header { text-align: center; margin-bottom: 30px; }
+                .bill-header h2 { margin: 0; color: #4a6fa5; }
+                .bill-section { margin-bottom: 18px; }
+                .bill-label { font-weight: 600; color: #166088; }
+                table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+                th, td { padding: 10px 8px; border: 1px solid #ddd; text-align: left; }
+                th { background: #f5f5f5; }
+                .total-row td { font-weight: bold; color: #166088; }
+                .right { text-align: right; }
+            </style>
+        </head>
+        <body>
+            <div class="bill-header">
+                <h2>BookShop Pro</h2>
+                <div>Order Bill #${order.id}</div>
+                <div>${new Date(order.orderDate).toLocaleString()}</div>
+            </div>
+            <div class="bill-section">
+                <span class="bill-label">Customer:</span> ${order.customer ? order.customer.name + ' (' + order.customer.accountNumber + ')' : '-'}<br>
+                <span class="bill-label">Address:</span> ${order.customer ? order.customer.address : '-'}<br>
+                <span class="bill-label">Telephone:</span> ${order.customer ? order.customer.telephone : '-'}
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${order.item ? order.item.name : '-'}</td>
+                        <td>${order.item ? order.item.description : '-'}</td>
+                        <td class="right">${order.price.toFixed(2)}</td>
+                        <td class="right">${order.quantity}</td>
+                        <td class="right">${order.discount.toFixed(2)}</td>
+                        <td class="right">${order.total.toFixed(2)}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="bill-section" style="text-align:right;margin-top:30px;">
+                <span class="bill-label">Grand Total: </span> <span style="font-size:1.2em;">${order.total.toFixed(2)}</span>
+            </div>
+            <div style="margin-top:40px;text-align:center;color:#888;font-size:0.95em;">Thank you for your purchase!</div>
+            <script>window.print();<\/script>
+        </body>
+        </html>
+    `);
+    billWindow.document.close();
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+    await fetchCustomersAndItems();
+    await fetchOrders();
+});
+</script>
+</body>
+</html> 
