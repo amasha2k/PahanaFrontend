@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookshop Management System</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
         :root {
             --primary-color: #4a6fa5;
@@ -265,7 +266,7 @@
     <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-book"></i> BookShop Pro</h2>
+            <h2><i class="fas fa-book"></i> Pahana Edu </h2>
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
@@ -303,14 +304,10 @@
                     <i class="fas fa-clipboard-list"></i> Manage Orders
                 </a>
             </li>
+
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-chart-line"></i> Reports
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-cog"></i> Settings
+                <a href="#" class="nav-link" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </li>
         </ul>
@@ -323,7 +320,7 @@
                 <h1><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h1>
             </div>
             <div class="user-info">
-                <img src="https://via.placeholder.com/40" alt="User">
+                <img src="https://via.placeholder.com/40" id="image" alt="User" style="object-fit: cover">
                 <span>Admin User</span>
             </div>
         </div>
@@ -347,7 +344,7 @@
             </div>
             <div class="stat-card revenue">
                 <h3>Monthly Revenue</h3>
-                <div class="value">$12,456</div>
+                <div class="value">Rs 12,456</div>
                 <p><i class="fas fa-arrow-up"></i> 8% from last month</p>
             </div>
         </div>
@@ -409,26 +406,101 @@
             </ul>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <div class="quick-action" onclick="location.href='#'">
-                <i class="fas fa-user-plus"></i>
-                <h3>Add Customer</h3>
-            </div>
-            <div class="quick-action" onclick="location.href='#'">
-                <i class="fas fa-book-medical"></i>
-                <h3>Add Book</h3>
-            </div>
-            <div class="quick-action" onclick="location.href='#'">
-                <i class="fas fa-cart-plus"></i>
-                <h3>Create Order</h3>
-            </div>
-            <div class="quick-action" onclick="location.href='#'">
-                <i class="fas fa-chart-pie"></i>
-                <h3>View Reports</h3>
-            </div>
-        </div>
     </div>
 </div>
 </body>
+<script src="api.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+
+
+function showToast(message, type = "success") {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === "success" ? "#28a745" : "#dc3545",
+        close: true,
+        stopOnFocus: true
+    }).showToast();
+}
+
+async function populateDashboard() {
+    try {
+        // Fetch stats
+        const statsRes = await fetch(API_DASHBOARD_STATS);
+        if (statsRes.ok) {
+            const stats = await statsRes.json();
+            document.querySelector('.stat-card.today-orders .value').textContent = stats.todaysOrders;
+            document.querySelector('.stat-card.total-customers .value').textContent = stats.totalCustomers;
+            document.querySelector('.stat-card.total-items .value').textContent = stats.totalItems;
+            document.querySelector('.stat-card.revenue .value').textContent = `Rs ${stats.monthlyRevenue.toFixed(2)}`;
+            document.querySelector('.stat-card.today-orders p').innerHTML = `<i class='fas fa-arrow-up'></i> ${stats.orderChange}% from yesterday`;
+            document.querySelector('.stat-card.total-customers p').innerHTML = `<i class='fas fa-arrow-up'></i> ${stats.newCustomersToday} new today`;
+            document.querySelector('.stat-card.total-items p').innerHTML = `<i class='fas fa-arrow-down'></i> ${stats.lowStockItems.length} low in stock`;
+            document.querySelector('.stat-card.revenue p').innerHTML = `<i class='fas fa-arrow-up'></i> ${stats.revenueChange}% from last month`;
+            // Optionally show a toast for low stock
+            if (stats.lowStockItems.length > 0) {
+                showToast(`Warning: ${stats.lowStockItems.length} item(s) low in stock!`, 'error');
+            }
+        }
+        // Fetch activity
+        const activityRes = await fetch(API_DASHBOARD_ACTIVITY);
+        if (activityRes.ok) {
+            const activity = await activityRes.json();
+            const activityList = document.querySelector('.activity-list');
+            activityList.innerHTML = '';
+            activity.slice(0,5).forEach(act => {
+                let icon = '', title = '', desc = '', time = new Date(act.time).toLocaleString();
+                if (act.type === 'lowStock') {
+                    icon = "<i class='fas fa-exclamation-circle'></i>";
+                    title = 'Low Stock Alert';
+                    desc = `${act.item} is running low`;
+                } else if (act.type === 'item') {
+                    icon = "<i class='fas fa-book-medical'></i>";
+                    title = 'New Book Added';
+                    desc = `"${act.item}" added`;
+                } else if (act.type === 'customer') {
+                    icon = "<i class='fas fa-user-plus'></i>";
+                    title = 'New Customer Added';
+                    desc = `${act.customer} registered`;
+                } else if (act.type === 'order') {
+                    icon = "<i class='fas fa-cart-plus'></i>";
+                    title = 'New Order Placed';
+                    desc = `Order #${act.orderId} by ${act.customer}`;
+                }
+                activityList.innerHTML += `
+                    <li class="activity-item">
+                        <div class="activity-icon">${icon}</div>
+                        <div class="activity-details">
+                            <h4>${title}</h4>
+                            <p>${desc}</p>
+                        </div>
+                        <div class="activity-time">${time}</div>
+                    </li>
+                `;
+            });
+        }
+    } catch (err) {
+        showToast('Failed to load dashboard data.', 'error');
+    }
+}
+window.addEventListener('DOMContentLoaded', populateDashboard);
+
+document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+    e.preventDefault();
+    try {
+        const response = await fetch(API_AUTH_LOGOUT, { method: 'POST'});
+        if (response.ok) {
+            localStorage.removeItem('signedInUser');
+            window.location.href = 'login.html';
+        } else {
+            showToast('Logout failed!', 'error');
+        }
+    } catch (err) {
+        showToast('Network error. Please try again.', 'error');
+    }
+});
+</script>
 </html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'float-delay': 'float 3s ease-in-out infinite 0.5s',
+                        'float-around': 'floatAround 20s linear infinite',
+                        'ripple': 'ripple 0.6s linear',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        floatAround: {
+                            '0%': { transform: 'translate(0, 0) rotate(0deg)' },
+                            '25%': { transform: 'translate(50px, 50px) rotate(90deg)' },
+                            '50%': { transform: 'translate(100px, 0) rotate(180deg)' },
+                            '75%': { transform: 'translate(50px, -50px) rotate(270deg)' },
+                            '100%': { transform: 'translate(0, 0) rotate(360deg)' },
+                        },
+                        ripple: {
+                            'to': {
+                                transform: 'scale(4)',
+                                opacity: '0'
+                            },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        .screen-reader-text {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .four::before, .four::after {
+            content: '';
+            position: absolute;
+            background-color: white;
+        }
+
+        .four::before {
+            width: 40px;
+            height: 120px;
+            transform: rotate(50deg);
+            right: 30px;
+            top: 15px;
+            border-radius: 20px;
+        }
+
+        .four::after {
+            width: 40px;
+            height: 180px;
+            left: 50px;
+            top: 35px;
+            border-radius: 20px;
+        }
+
+        .zero::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border-radius: 50%;
+            top: 25px;
+            left: 25px;
+        }
+    </style>
+</head>
+<body class="font-['Montserrat'] bg-gray-50 text-gray-800 min-h-screen flex justify-center items-center overflow-hidden">
+<div class="container relative text-center px-4">
+    <!-- Floating background shapes -->
+    <div id="floating-shapes"></div>
+
+    <!-- 404 Numbers -->
+    <div class="error-container flex justify-center items-center mb-8 relative">
+        <!-- First 4 -->
+        <div class="four relative w-[150px] h-[250px] mx-2 md:mx-4 bg-gradient-to-b from-purple-500 to-purple-300 rounded-2xl shadow-lg shadow-purple-300/30 animate-float">
+            <span class="screen-reader-text">4</span>
+        </div>
+
+        <!-- 0 -->
+        <div class="zero relative w-[150px] h-[150px] mx-2 md:mx-4 rounded-full bg-gradient-to-b from-teal-400 to-teal-200 shadow-lg shadow-teal-300/30 animate-float-delay">
+            <span class="screen-reader-text">0</span>
+        </div>
+
+        <!-- Second 4 -->
+        <div class="four relative w-[150px] h-[250px] mx-2 md:mx-4 bg-gradient-to-b from-purple-500 to-purple-300 rounded-2xl shadow-lg shadow-purple-300/30 animate-float">
+            <span class="screen-reader-text">4</span>
+        </div>
+    </div>
+
+    <!-- Message -->
+    <div class="message mt-8">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Oops! Page not found</h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-600">The page you're looking for doesn't exist or has been moved.</p>
+        <a href="/" class="home-button inline-block px-8 py-3 bg-gradient-to-r from-purple-500 to-teal-400 text-white font-bold rounded-full shadow-lg shadow-purple-300/30 transition-all duration-300 hover:translate-y-[-3px] hover:shadow-xl hover:shadow-purple-300/40">
+            Go Back Home
+        </a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add floating shapes
+        const container = document.getElementById('floating-shapes');
+        const colors = ['bg-purple-500', 'bg-teal-400', 'bg-purple-300', 'bg-teal-200'];
+
+        for (let i = 0; i < 15; i++) {
+            const shape = document.createElement('div');
+            shape.classList.add('absolute', 'z-[-1]', 'animate-float-around');
+
+            // Random properties
+            const size = Math.random() * 30 + 10;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const opacity = Math.random() * 0.5 + 0.1;
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 5;
+
+            shape.style.width = `${size}px`;
+            shape.style.height = `${size}px`;
+            shape.style.opacity = opacity;
+            shape.style.left = `${left}%`;
+            shape.style.top = `${top}%`;
+            shape.style.animationDuration = `${duration}s`;
+            shape.style.animationDelay = `${delay}s`;
+
+            shape.classList.add(color);
+
+            // Random shape
+            if (Math.random() > 0.5) {
+                shape.classList.add('rounded-full');
+            } else {
+                shape.classList.add('rounded-lg');
+            }
+
+            container.appendChild(shape);
+        }
+
+        // Add ripple effect to button
+        const button = document.querySelector('.home-button');
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple', 'absolute', 'bg-white/70', 'rounded-full', 'pointer-events-none');
+            this.appendChild(ripple);
+
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.style.animation = 'ripple 0.6s linear';
+
+            setTimeout(() => {
+                ripple.remove();
+                window.location.href = this.getAttribute('href');
+            }, 600);
+        });
+    });
+</script>
+</body>
+</html>

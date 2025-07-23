@@ -53,7 +53,7 @@
     <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-book"></i> BookShop Pro</h2>
+            <h2><i class="fas fa-book"></i> Pahana Edu</h2>
         </div>
         <ul class="nav-menu">
             <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -63,8 +63,7 @@
             <li class="nav-item"><a href="manage-items.html" class="nav-link active"><i class="fas fa-book-open"></i> Manage Items</a></li>
             <li class="nav-item"><a href="add-order.html" class="nav-link"><i class="fas fa-cart-plus"></i> Add Order</a></li>
             <li class="nav-item"><a href="manage-orders.html" class="nav-link"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
-            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-chart-line"></i> Reports</a></li>
-            <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
+
         </ul>
     </div>
     <!-- Main Content Area -->
@@ -74,7 +73,7 @@
                 <h1><i class="fas fa-book-open"></i> Manage Items</h1>
             </div>
             <div class="user-info">
-                <img src="https://via.placeholder.com/40" alt="User">
+                <img src="https://via.placeholder.com/40" id="image" alt="User" style="object-fit: cover">
                 <span>Admin User</span>
             </div>
         </div>
@@ -152,7 +151,6 @@ function showToast(message, type = "success") {
     }).showToast();
 }
 
-const API_ITEMS = `${API_BASE_URL}/api/items`;
 
 let itemsCache = [];
 
@@ -169,14 +167,16 @@ async function fetchItems() {
                 return;
             }
             tableBody.innerHTML = '';
+            let lowStockCount = 0;
             items.forEach(item => {
+                if (item.stock <= 5) lowStockCount++;
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.id}</td>
                     <td>${item.name}</td>
                     <td>${item.description}</td>
                     <td>${item.price.toFixed(2)}</td>
-                    <td>${item.stock}</td>
+                    <td>${item.stock <= 5 ? `<span style='color:#dc3545;font-weight:bold;'>${item.stock} <i class='fas fa-exclamation-triangle' title='Low Stock'></i></span>` : item.stock}</td>
                     <td>
                         <button class="action-btn edit" onclick="openEditModal(${item.id})"><i class="fas fa-pen"></i> Edit</button>
                         <button class="action-btn delete" style="background:#dc3545" onclick="openDeleteModal(${item.id})"><i class="fas fa-trash"></i> Delete</button>
@@ -184,6 +184,9 @@ async function fetchItems() {
                 `;
                 tableBody.appendChild(row);
             });
+            if (lowStockCount > 0) {
+                showToast(`Warning: ${lowStockCount} item(s) low in stock!`, 'error');
+            }
         } else {
             showToast('Failed to fetch items.', 'error');
             tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Failed to load items.</td></tr>';

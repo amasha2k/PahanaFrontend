@@ -265,7 +265,7 @@
     <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-book"></i> Pahana EDu</h2>
+            <h2><i class="fas fa-book"></i> Pahana Edu</h2>
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
@@ -303,16 +303,6 @@
                     <i class="fas fa-clipboard-list"></i> Manage Orders
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-chart-line"></i> Reports
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-cog"></i> Settings
-                </a>
-            </li>
         </ul>
     </div>
 
@@ -323,7 +313,7 @@
                 <h1><i class="fa fa-plus-circle"></i> Add Customer </h1>
             </div>
             <div class="user-info">
-                <img src="https://via.placeholder.com/40" alt="User">
+                <img src="https://via.placeholder.com/40" id="image" alt="User" style="object-fit: cover">
                 <span>Admin User</span>
             </div>
         </div>
@@ -333,27 +323,33 @@
             <form id="addCustomerForm">
                 <div class="form-group" style="margin-bottom:20px;">
                     <label for="accountNumber" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Account Number</label>
-                    <input type="text" id="accountNumber" name="accountNumber" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
+                    <input type="text" id="accountNumber" name="accountNumber" required readonly style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;background:#f0f0f0;">
+                    <div class="error-message" id="accountNumberError" style="color:#dc3545;font-size:0.95em;display:none;"></div>
                 </div>
                 <div class="form-group" style="margin-bottom:20px;">
                     <label for="name" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Name</label>
                     <input type="text" id="name" name="name" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
+                    <div class="error-message" id="nameError" style="color:#dc3545;font-size:0.95em;display:none;"></div>
                 </div>
                 <div class="form-group" style="margin-bottom:20px;">
                     <label for="address" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Address</label>
                     <input type="text" id="address" name="address" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
+                    <div class="error-message" id="addressError" style="color:#dc3545;font-size:0.95em;display:none;"></div>
                 </div>
                 <div class="form-group" style="margin-bottom:20px;">
                     <label for="telephone" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Telephone</label>
                     <input type="text" id="telephone" name="telephone" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
+                    <div class="error-message" id="telephoneError" style="color:#dc3545;font-size:0.95em;display:none;"></div>
                 </div>
                 <div class="form-group" style="margin-bottom:20px;">
                     <label for="unitsConsumed" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Units Consumed</label>
                     <input type="number" id="unitsConsumed" name="unitsConsumed" value="0" min="0" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
+                    <div class="error-message" id="unitsConsumedError" style="color:#dc3545;font-size:0.95em;display:none;"></div>
                 </div>
                 <button type="submit" class="btn" style="background-color:#3498db;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px;display:block;width:100%;margin-top:20px;">Add Customer</button>
             </form>
         </div>
+        <script src="api.js"></script>
         <!-- Toastify CSS and JS -->
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -371,8 +367,42 @@
             }
             document.getElementById('addCustomerForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+                // Validate all fields before submit
+                let valid = true;
+                if (!document.getElementById('name').value.trim()) {
+                    document.getElementById('nameError').textContent = 'Name is required.';
+                    document.getElementById('nameError').style.display = 'block';
+                    valid = false;
+                }
+                if (!document.getElementById('address').value.trim()) {
+                    document.getElementById('addressError').textContent = 'Address is required.';
+                    document.getElementById('addressError').style.display = 'block';
+                    valid = false;
+                }
+                if (!/^0\d{9}$/.test(document.getElementById('telephone').value)) {
+                    document.getElementById('telephoneError').textContent = 'Telephone must be 10 digits and start with 0.';
+                    document.getElementById('telephoneError').style.display = 'block';
+                    valid = false;
+                }
+                if (isNaN(document.getElementById('unitsConsumed').value) || Number(document.getElementById('unitsConsumed').value) < 0) {
+                    document.getElementById('unitsConsumedError').textContent = 'Units Consumed must be 0 or greater.';
+                    document.getElementById('unitsConsumedError').style.display = 'block';
+                    valid = false;
+                }
+                if (!document.getElementById('accountNumber').value.trim()) {
+                    document.getElementById('accountNumberError').textContent = 'Account Number is required.';
+                    document.getElementById('accountNumberError').style.display = 'block';
+                    valid = false;
+                }
+                if (!valid) return;
+                // Ensure account number is set
+                let accountNumberField = document.getElementById('accountNumber');
+                if (!accountNumberField.value) {
+                    await autofillAccountNumber();
+                }
+                console.log('Submitting account number:', accountNumberField.value); // Debug log
                 const customer = {
-                    accountNumber: document.getElementById('accountNumber').value,
+                    accountNumber: accountNumberField.value,
                     name: document.getElementById('name').value,
                     address: document.getElementById('address').value,
                     telephone: document.getElementById('telephone').value,
@@ -387,6 +417,7 @@
                     if (response.ok) {
                         showToast('Customer added successfully!', 'success');
                         document.getElementById('addCustomerForm').reset();
+                        await autofillAccountNumber(); // Refill for next entry
                     } else {
                         const errorData = await response.json();
                         showToast(errorData.message || 'Failed to add customer.', 'error');
@@ -415,7 +446,7 @@
                 <div class="result-item" style="margin-bottom:10px;"><span class="result-label" style="font-weight:600;color:#2c3e50;">Units Consumed:</span> <span id="displayUnitsConsumed"></span></div>
             </div>
         </div>
-        <script src="api.js"></script>
+
         <script>
             async function fetchCustomerData() {
                 const accountNumber = document.getElementById('accountNumber').value.trim();
@@ -450,5 +481,14 @@
 
     
 </div>
+<script>
+    // Display signed-in user in .user-info
+    const signedInUser = localStorage.getItem('signedInUser');
+    if (signedInUser) {
+        document.querySelectorAll('.user-info span').forEach(el => {
+            el.textContent = signedInUser;
+        });
+    }
+</script>
 </body>
 </html>
