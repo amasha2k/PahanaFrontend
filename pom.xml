@@ -5,15 +5,15 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>PahanaFrontend</artifactId>
+    <artifactId>pahananew</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>PahanaFrontend</name>
-    <description>PahanaFrontend</description>
+    <name>pahananew</name>
+    <description>pahananew</description>
     <url/>
     <licenses>
         <license/>

@@ -35,18 +35,122 @@
         .page-title h1 { margin: 0; color: #166088; }
         .user-info { display: flex; align-items: center; }
         .user-info img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
-        .form-container { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 32px; max-width: 600px; margin: 0 auto; }
+        .form-container { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 32px; max-width: 800px; margin: 0 auto; }
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 6px; font-weight: 600; color: #2c3e50; }
         input[type="text"], input[type="number"], input[type="datetime-local"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
         input[type="text"]:focus, input[type="number"]:focus, input[type="datetime-local"]:focus, select:focus { border-color: #3498db; outline: none; box-shadow: 0 0 5px rgba(52, 152, 219, 0.2); }
         .btn { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; display: block; width: 100%; margin-top: 20px; }
         .btn:hover { background-color: #2980b9; }
+        .btn-secondary { background-color: #6c757d; }
+        .btn-secondary:hover { background-color: #5a6268; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-success { background-color: #28a745; }
+        .btn-success:hover { background-color: #218838; }
         .search-select { position: relative; }
         .search-select input { padding-right: 30px; }
         .search-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-top: none; max-height: 180px; overflow-y: auto; z-index: 10; border-radius: 0 0 4px 4px; }
         .search-option { padding: 10px; cursor: pointer; transition: background 0.2s; }
         .search-option:hover { background: #f0f4fa; }
+        
+        /* New styles for multiple items */
+        .items-section { margin-bottom: 30px; }
+        .items-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .items-header h3 { margin: 0; color: #2c3e50; }
+        .add-item-btn { 
+            background-color: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+            display: inline-block;
+            width: auto;
+            margin: 0;
+        }
+        .add-item-btn:hover { background-color: #218838; }
+        .item-row { 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            position: relative;
+        }
+        .item-row-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid #dee2e6;
+        }
+        .item-number { 
+            font-weight: bold; 
+            color: #495057; 
+            font-size: 16px;
+        }
+        .remove-item-btn { 
+            background-color: #dc3545; 
+            color: white; 
+            border: none; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 12px;
+            display: inline-block;
+            width: auto;
+            margin: 0;
+        }
+        .remove-item-btn:hover { background-color: #c82333; }
+        .item-fields { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+        }
+        .item-fields .form-group:nth-child(1) { grid-column: 1 / -1; }
+        .item-fields .form-group:nth-child(2) { grid-column: 1 / -1; }
+        .item-fields .form-group:nth-child(3) { grid-column: 1; }
+        .item-fields .form-group:nth-child(4) { grid-column: 2; }
+        .item-fields .form-group:nth-child(5) { grid-column: 1; }
+        
+        .order-summary { 
+            background: #e3f2fd; 
+            border: 1px solid #2196f3; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 20px;
+        }
+        .summary-header { 
+            font-weight: bold; 
+            color: #1976d2; 
+            margin-bottom: 15px; 
+            font-size: 18px;
+        }
+        .summary-item { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 8px; 
+            padding: 5px 0;
+        }
+        .summary-item:last-child { 
+            border-top: 1px solid #bbdefb; 
+            padding-top: 10px; 
+            margin-top: 10px; 
+            font-weight: bold; 
+            font-size: 16px;
+        }
+        .summary-label { color: #424242; }
+        .summary-value { color: #1976d2; font-weight: 600; }
+        
+        .no-items-message { 
+            text-align: center; 
+            color: #6c757d; 
+            font-style: italic; 
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -64,6 +168,7 @@
             <li class="nav-item"><a href="manage-items.html" class="nav-link"><i class="fas fa-book-open"></i> Manage Items</a></li>
             <li class="nav-item"><a href="add-order.html" class="nav-link active"><i class="fas fa-cart-plus"></i> Add Order</a></li>
             <li class="nav-item"><a href="manage-orders.html" class="nav-link"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
+            <li class="nav-item"><a href="help.html" class="nav-link"><i class="fas fa-question-circle"></i> Help</a></li>
 
         </ul>
     </div>
@@ -86,29 +191,36 @@
                         <option value="">Select a customer</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="itemId">Item</label>
-                    <select id="itemId" name="itemId" required>
-                        <option value="">Select an item</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" id="price" name="price" min="0" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="discount">Discount</label>
-                    <input type="number" id="discount" name="discount" min="0" step="0.01" value="0">
-                </div>
+                
                 <div class="form-group">
                     <label for="orderDate">Order Date</label>
                     <input type="datetime-local" id="orderDate" name="orderDate" required>
                 </div>
-                <button type="submit" class="btn">Add Order</button>
+                
+                <!-- Items Section -->
+                <div class="items-section">
+                    <div class="items-header">
+                        <h3><i class="fas fa-shopping-cart"></i> Order Items</h3>
+                        <button type="button" class="add-item-btn" onclick="addItemRow()">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+                    <div id="itemsContainer">
+                        <div class="no-items-message">
+                            Click "Add Item" to start adding items to this order
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="order-summary" id="orderSummary" style="display: none;">
+                    <div class="summary-header">
+                        <i class="fas fa-calculator"></i> Order Summary
+                    </div>
+                    <div id="summaryContent"></div>
+                </div>
+                
+                <button type="submit" class="btn">Create Order</button>
             </form>
         </div>
     </div>
@@ -116,6 +228,9 @@
 <script src="api.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
+let itemCounter = 0;
+let items = [];
+
 function showToast(message, type = "success") {
     Toastify({
         text: message,
@@ -128,7 +243,165 @@ function showToast(message, type = "success") {
     }).showToast();
 }
 
+function addItemRow() {
+    itemCounter++;
+    const itemId = `item-${itemCounter}`;
+    
+    const itemRow = document.createElement('div');
+    itemRow.className = 'item-row';
+    itemRow.id = itemId;
+    
+    itemRow.innerHTML = `
+        <div class="item-row-header">
+            <span class="item-number">Item ${itemCounter}</span>
+            <button type="button" class="remove-item-btn" onclick="removeItemRow('${itemId}')">
+                <i class="fas fa-trash"></i> Remove
+            </button>
+        </div>
+        <div class="item-fields">
+            <div class="form-group">
+                <label for="itemId-${itemCounter}">Item</label>
+                <select id="itemId-${itemCounter}" name="itemId-${itemCounter}" required onchange="updateItemPrice(${itemCounter})">
+                    <option value="">Select an item</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity-${itemCounter}">Quantity</label>
+                <input type="number" id="quantity-${itemCounter}" name="quantity-${itemCounter}" min="1" required onchange="updateItemTotal(${itemCounter})">
+            </div>
+            <div class="form-group">
+                <label for="price-${itemCounter}">Price</label>
+                <input type="number" id="price-${itemCounter}" name="price-${itemCounter}" min="0" step="0.01" required onchange="updateItemTotal(${itemCounter})">
+            </div>
+            <div class="form-group">
+                <label for="discount-${itemCounter}">Discount</label>
+                <input type="number" id="discount-${itemCounter}" name="discount-${itemCounter}" min="0" step="0.01" value="0" onchange="updateItemTotal(${itemCounter})">
+            </div>
+            <div class="form-group">
+                <label for="total-${itemCounter}">Item Total</label>
+                <input type="number" id="total-${itemCounter}" name="total-${itemCounter}" readonly style="background-color: #f8f9fa;">
+            </div>
+        </div>
+    `;
+    
+    const container = document.getElementById('itemsContainer');
+    if (container.querySelector('.no-items-message')) {
+        container.innerHTML = '';
+    }
+    container.appendChild(itemRow);
+    
+    // Populate the item dropdown
+    populateItemDropdown(itemCounter);
+    
+    // Update summary
+    updateOrderSummary();
+}
 
+function removeItemRow(itemId) {
+    const itemRow = document.getElementById(itemId);
+    if (itemRow) {
+        itemRow.remove();
+        updateOrderSummary();
+        
+        // Show no items message if no items left
+        const container = document.getElementById('itemsContainer');
+        if (container.children.length === 0) {
+            container.innerHTML = '<div class="no-items-message">Click "Add Item" to start adding items to this order</div>';
+        }
+    }
+}
+
+function populateItemDropdown(itemNumber) {
+    const itemSelect = document.getElementById(`itemId-${itemNumber}`);
+    if (!itemSelect) return;
+    
+    // Clear existing options except the first one
+    itemSelect.innerHTML = '<option value="">Select an item</option>';
+    
+    // Add items from the global items array
+    if (window.availableItems) {
+        window.availableItems.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.id;
+            option.textContent = `${item.name} (${item.description})`;
+            option.setAttribute('data-price', item.price);
+            itemSelect.appendChild(option);
+        });
+    }
+}
+
+function updateItemPrice(itemNumber) {
+    const itemSelect = document.getElementById(`itemId-${itemNumber}`);
+    const priceInput = document.getElementById(`price-${itemNumber}`);
+    
+    if (itemSelect && priceInput) {
+        const selected = itemSelect.options[itemSelect.selectedIndex];
+        const price = selected.getAttribute('data-price');
+        if (price) {
+            priceInput.value = price;
+            updateItemTotal(itemNumber);
+        }
+    }
+}
+
+function updateItemTotal(itemNumber) {
+    const quantity = parseFloat(document.getElementById(`quantity-${itemNumber}`).value) || 0;
+    const price = parseFloat(document.getElementById(`price-${itemNumber}`).value) || 0;
+    const discount = parseFloat(document.getElementById(`discount-${itemNumber}`).value) || 0;
+    
+    const total = (quantity * price) - discount;
+    document.getElementById(`total-${itemNumber}`).value = total.toFixed(2);
+    
+    updateOrderSummary();
+}
+
+function updateOrderSummary() {
+    const summaryDiv = document.getElementById('orderSummary');
+    const summaryContent = document.getElementById('summaryContent');
+    
+    let totalItems = 0;
+    let totalAmount = 0;
+    let totalDiscount = 0;
+    
+    // Calculate totals from all item rows
+    const itemRows = document.querySelectorAll('.item-row');
+    itemRows.forEach(row => {
+        const itemNumber = row.id.split('-')[1];
+        const quantity = parseFloat(document.getElementById(`quantity-${itemNumber}`).value) || 0;
+        const price = parseFloat(document.getElementById(`price-${itemNumber}`).value) || 0;
+        const discount = parseFloat(document.getElementById(`discount-${itemNumber}`).value) || 0;
+        
+        totalItems += quantity;
+        totalAmount += (quantity * price);
+        totalDiscount += discount;
+    });
+    
+    const grandTotal = totalAmount - totalDiscount;
+    
+    if (totalItems > 0) {
+        summaryContent.innerHTML = `
+            <div class="summary-item">
+                <span class="summary-label">Total Items:</span>
+                <span class="summary-value">${totalItems}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Subtotal:</span>
+                <span class="summary-value">$${totalAmount.toFixed(2)}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Total Discount:</span>
+                <span class="summary-value">$${totalDiscount.toFixed(2)}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Grand Total:</span>
+                <span class="summary-value">$${grandTotal.toFixed(2)}</span>
+            </div>
+        `;
+        summaryDiv.style.display = 'block';
+    } else {
+        summaryDiv.style.display = 'none';
+    }
+}
 
 async function populateDropdowns() {
     // Populate customers
@@ -145,57 +418,95 @@ async function populateDropdowns() {
             });
         }
     } catch {}
-    // Populate items
+    
+    // Populate items and store globally
     try {
         const response = await fetch(API_ITEMS);
         if (response.ok) {
             const items = await response.json();
-            const itemSelect = document.getElementById('itemId');
-            items.forEach(i => {
-                const option = document.createElement('option');
-                option.value = i.id;
-                option.textContent = `${i.name} (${i.description})`;
-                option.setAttribute('data-price', i.price);
-                itemSelect.appendChild(option);
+            window.availableItems = items;
+            
+            // Populate any existing item dropdowns
+            const itemRows = document.querySelectorAll('.item-row');
+            itemRows.forEach(row => {
+                const itemNumber = row.id.split('-')[1];
+                populateItemDropdown(itemNumber);
             });
         }
     } catch {}
 }
 
-document.getElementById('itemId').addEventListener('change', function() {
-    const selected = this.options[this.selectedIndex];
-    const price = selected.getAttribute('data-price');
-    if (price) {
-        document.getElementById('price').value = price;
-    }
-});
-
 document.getElementById('addOrderForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const order = {
-        customerId: parseInt(document.getElementById('customerId').value, 10),
-        itemId: parseInt(document.getElementById('itemId').value, 10),
-        quantity: parseInt(document.getElementById('quantity').value, 10),
-        price: parseFloat(document.getElementById('price').value),
-        discount: parseFloat(document.getElementById('discount').value),
-        orderDate: new Date(document.getElementById('orderDate').value).toISOString()
-    };
-    if (!order.customerId || !order.itemId) {
-        showToast('Please select a customer and an item.', 'error');
+    
+    const customerId = parseInt(document.getElementById('customerId').value, 10);
+    const orderDate = document.getElementById('orderDate').value;
+    
+    if (!customerId) {
+        showToast('Please select a customer.', 'error');
         return;
     }
+    
+    // Collect all items
+    const orderItems = [];
+    const itemRows = document.querySelectorAll('.item-row');
+    
+    if (itemRows.length === 0) {
+        showToast('Please add at least one item to the order.', 'error');
+        return;
+    }
+    
+    itemRows.forEach(row => {
+        const itemNumber = row.id.split('-')[1];
+        const itemId = parseInt(document.getElementById(`itemId-${itemNumber}`).value, 10);
+        const quantity = parseInt(document.getElementById(`quantity-${itemNumber}`).value, 10);
+        const price = parseFloat(document.getElementById(`price-${itemNumber}`).value);
+        const discount = parseFloat(document.getElementById(`discount-${itemNumber}`).value);
+        
+        if (itemId && quantity && price !== null) {
+            orderItems.push({
+                itemId: itemId,
+                quantity: quantity,
+                price: price,
+                discount: discount || 0
+            });
+        }
+    });
+    
+    if (orderItems.length === 0) {
+        showToast('Please fill in all required fields for at least one item.', 'error');
+        return;
+    }
+    
+    const order = {
+        customerId: customerId,
+        orderDate: new Date(orderDate).toISOString(),
+        items: orderItems
+    };
+    
     try {
         const response = await fetch(API_ORDERS, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(order)
         });
+        
         if (response.ok) {
-            showToast('Order added successfully!', 'success');
+            showToast('Order created successfully!', 'success');
             document.getElementById('addOrderForm').reset();
+            
+            // Clear all item rows
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = '<div class="no-items-message">Click "Add Item" to start adding items to this order</div>';
+            
+            // Hide summary
+            document.getElementById('orderSummary').style.display = 'none';
+            
+            // Reset counter
+            itemCounter = 0;
         } else {
             const errorData = await response.json();
-            showToast(errorData.message || 'Failed to add order.', 'error');
+            showToast(errorData.message || 'Failed to create order.', 'error');
         }
     } catch (err) {
         showToast('Network error. Please try again later.', 'error');

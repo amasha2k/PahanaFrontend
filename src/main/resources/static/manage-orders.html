@@ -14,37 +14,245 @@
             background-color: #f5f5f5;
             color: #333;
         }
-        .dashboard { display: flex; min-height: 100vh; }
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
         .sidebar {
             width: 250px;
             background-color: #4a6fa5;
             color: white;
             padding: 20px 0;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100%;
         }
-        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .sidebar-header h2 { margin: 0; display: flex; align-items: center; }
-        .sidebar-header h2 i { margin-right: 10px; color: #4fc3f7; }
-        .nav-menu { list-style: none; padding: 0; margin: 20px 0; }
-        .nav-item { margin-bottom: 5px; }
-        .nav-link { display: flex; align-items: center; padding: 12px 20px; color: white; text-decoration: none; transition: all 0.3s; }
-        .nav-link:hover, .nav-link.active { background-color: rgba(255,255,255,0.1); border-left: 4px solid #4fc3f7; }
-        .nav-link i { margin-right: 10px; width: 20px; text-align: center; }
-        .main-content { flex: 1; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #ddd; }
-        .page-title h1 { margin: 0; color: #166088; }
-        .user-info { display: flex; align-items: center; }
-        .user-info img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
-        .orders-table-container { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 24px; max-width: 1200px; margin: 0 auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px 5px; text-align: left; }
-        th { background: #4a6fa5; color: white; font-weight: 600; }
-        tr:nth-child(even) { background: #f8f9fa; }
-        tr:hover { background: #e3eaf6; }
-        .no-data { text-align: center; color: #888; padding: 30px 0; font-size: 1.1rem; }
-        .action-btn { background: #166088; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; margin-right: 6px; transition: background 0.2s; }
-        .action-btn:hover { background: #4a6fa5; }
-        .no-data { text-align: center; color: #888; padding: 30px 0; font-size: 1.1rem; }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h2 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar-header h2 i {
+            margin-right: 10px;
+            color: #4fc3f7;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 4px solid #4fc3f7;
+        }
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 250px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .page-title h1 {
+            margin: 0;
+            color: #166088;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Table Styles */
+        .orders-table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-width: 1000px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #4a6fa5;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background-color: #f5f9ff;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #888;
+            padding: 30px 0;
+            font-size: 1.1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: #166088;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .action-btn:hover {
+            background: #4a6fa5;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .action-btn.delete {
+            background: #dc3545;
+        }
+
+        .action-btn.delete:hover {
+            background: #c82333;
+        }
+
+        .action-btn.print {
+            background: linear-gradient(90deg, #4fc3f7 0%, #43e97b 100%);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #166088;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .orders-table-container {
+                padding: 15px;
+            }
+            th, td {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -62,7 +270,7 @@
             <li class="nav-item"><a href="manage-items.html" class="nav-link"><i class="fas fa-book-open"></i> Manage Items</a></li>
             <li class="nav-item"><a href="add-order.html" class="nav-link"><i class="fas fa-cart-plus"></i> Add Order</a></li>
             <li class="nav-item"><a href="manage-orders.html" class="nav-link active"><i class="fas fa-clipboard-list"></i> Manage Orders</a></li>
-
+            <li class="nav-item"><a href="help.html" class="nav-link"><i class="fas fa-question-circle"></i> Help</a></li>
         </ul>
     </div>
     <!-- Main Content Area -->
@@ -72,250 +280,462 @@
                 <h1><i class="fas fa-clipboard-list"></i> Manage Orders</h1>
             </div>
             <div class="user-info">
-                <img src="https://via.placeholder.com/40" id="image" alt="User" style="object-fit: cover">
+                <img src="https://via.placeholder.com/40" id="image" alt="User">
                 <span>Admin User</span>
             </div>
         </div>
         <div class="orders-table-container">
             <table id="ordersTable">
                 <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Total</th>
-                        <th>Order Date</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                    <th>Order Date</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody id="ordersTableBody">
-                    <tr><td colspan="9" class="no-data">Loading orders...</td></tr>
+                <tr><td colspan="9" class="no-data">Loading orders...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 <!-- Edit Modal -->
-<div id="editModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:white;padding:30px 24px;border-radius:8px;max-width:500px;width:100%;margin:auto;position:relative;">
-        <h2 style="margin-top:0;color:#166088;margin-bottom:20px;">Edit Order</h2>
+<div id="editModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <h2>Edit Order</h2>
+        </div>
         <form id="editOrderForm">
             <input type="hidden" id="editOrderId">
-            <div style="margin-bottom:15px;">
-                <label for="editCustomerId" style="font-weight:600;">Customer</label>
-                <select id="editCustomerId" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;"></select>
+            <div class="form-group">
+                <label for="editCustomerId">Customer</label>
+                <select id="editCustomerId" class="form-control" required>
+                    <option value="">Select a customer</option>
+                </select>
             </div>
-            <div style="margin-bottom:15px;">
-                <label for="editItemId" style="font-weight:600;">Item</label>
-                <select id="editItemId" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;"></select>
+            <div class="form-group">
+                <label for="editOrderDate">Order Date</label>
+                <input type="datetime-local" id="editOrderDate" class="form-control" required>
             </div>
-            <div style="margin-bottom:15px;">
-                <label for="editQuantity" style="font-weight:600;">Quantity</label>
-                <input type="number" id="editQuantity" min="1" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            <div class="form-group">
+                <label>Order Items</label>
+                <div id="orderItemsContainer">
+                    <!-- Order items will be dynamically added here -->
+                </div>
+                <button type="button" onclick="addOrderItem()" class="action-btn" style="background:#17a2b8; margin-top: 10px;">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
             </div>
-            <div style="margin-bottom:15px;">
-                <label for="editPrice" style="font-weight:600;">Price</label>
-                <input type="number" id="editPrice" min="0" step="0.01" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
-            </div>
-            <div style="margin-bottom:15px;">
-                <label for="editDiscount" style="font-weight:600;">Discount</label>
-                <input type="number" id="editDiscount" min="0" step="0.01" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
-            </div>
-            <div style="margin-bottom:15px;">
-                <label for="editOrderDate" style="font-weight:600;">Order Date</label>
-                <input type="datetime-local" id="editOrderDate" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
-            </div>
-            <div style="display:flex;justify-content:flex-end;gap:10px;">
+            <div class="modal-footer">
                 <button type="button" onclick="closeEditModal()" class="action-btn" style="background:#888;">Cancel</button>
                 <button type="submit" class="action-btn" style="background:#28a745;">Save</button>
             </div>
         </form>
     </div>
 </div>
+
 <!-- Delete Confirmation Modal -->
-<div id="deleteModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:white;padding:30px 24px;border-radius:8px;max-width:350px;width:100%;margin:auto;position:relative;text-align:center;">
-        <h2 style="color:#dc3545;margin-bottom:20px;">Delete Order</h2>
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <div class="modal-header">
+            <h2 style="color:#dc3545;">Delete Order</h2>
+        </div>
         <p>Are you sure you want to delete this order?</p>
-        <div style="display:flex;justify-content:center;gap:10px;margin-top:20px;">
+        <div class="modal-footer" style="justify-content: center;">
             <button type="button" onclick="closeDeleteModal()" class="action-btn" style="background:#888;">Cancel</button>
             <button type="button" id="confirmDeleteBtn" class="action-btn" style="background:#dc3545;">Delete</button>
         </div>
     </div>
 </div>
+
 <script src="api.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
-function showToast(message, type = "success") {
-    Toastify({
-        text: message,
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: type === "success" ? "#28a745" : "#dc3545",
-        close: true,
-        stopOnFocus: true
-    }).showToast();
-}
+    // Global variables
+    let ordersCache = [];
+    let customersCache = [];
+    let itemsCache = [];
 
+    // Toast notification function
+    function showToast(message, type = "success") {
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            style: {
+                background: type === "success" ? "#28a745" : "#dc3545"
+            },
+            close: true,
+            stopOnFocus: true
+        }).showToast();
+    }
 
+    // Fetch customers and items for dropdowns
+    async function fetchCustomersAndItems() {
+        try {
+            console.log('Fetching customers and items...');
+            console.log('API_BASE_URL:', API_BASE_URL);
+            const [customersResponse, itemsResponse] = await Promise.all([
+                fetch(`${API_BASE_URL}/api/customers`),
+                fetch(`${API_BASE_URL}/api/items`)
+            ]);
 
-let ordersCache = [];
-let customersCache = [];
-let itemsCache = [];
+            console.log('Customers response status:', customersResponse.status);
+            console.log('Items response status:', itemsResponse.status);
 
-async function fetchCustomersAndItems() {
-    // Fetch customers
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/customers`);
-        if (response.ok) customersCache = await response.json();
-    } catch {}
-    // Fetch items
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/items`);
-        if (response.ok) itemsCache = await response.json();
-    } catch {}
-}
-
-async function fetchOrders() {
-    const tableBody = document.getElementById('ordersTableBody');
-    tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Loading orders...</td></tr>';
-    try {
-        const response = await fetch(API_ORDERS);
-        if (response.ok) {
-            const orders = await response.json();
-            ordersCache = orders;
-            if (orders.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="9" class="no-data">No orders found.</td></tr>';
-                return;
+            if (customersResponse.ok) {
+                customersCache = await customersResponse.json();
+                console.log('Customers loaded:', customersCache.length);
             }
-            tableBody.innerHTML = '';
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.id}</td>
-                    <td>${order.customer ? order.customer.name + ' (' + order.customer.accountNumber + ')' : '-'}</td>
-                    <td>${order.item ? order.item.name + ' (' + order.item.description + ')' : '-'}</td>
-                    <td>${order.quantity}</td>
-                    <td>${order.price.toFixed(2)}</td>
-                    <td>${order.discount.toFixed(2)}</td>
-                    <td>${order.total.toFixed(2)}</td>
-                    <td>${new Date(order.orderDate).toLocaleString()}</td>
-                    <td>
-                        <button class="action-btn edit" onclick="openEditModal(${order.id})"><i class="fas fa-pen"></i> Edit</button>
-                        <button class="action-btn delete" style="background:#dc3545" onclick="openDeleteModal(${order.id})"><i class="fas fa-trash"></i> Delete</button>
-                        <button class="action-btn" style="background:linear-gradient(90deg,#4fc3f7 0%,#43e97b 100%);color:#fff;" onclick="printBill(${order.id})"><i class='fas fa-print'></i> Print Bill</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
+            if (itemsResponse.ok) {
+                itemsCache = await itemsResponse.json();
+                console.log('Items loaded:', itemsCache.length);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    // Fetch and display orders
+    async function fetchOrders() {
+        const tableBody = document.getElementById('ordersTableBody');
+        tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Loading orders...</td></tr>';
+
+        try {
+            console.log('Fetching orders from:', API_ORDERS);
+            const response = await fetch(API_ORDERS);
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            if (response.ok) {
+                const orders = await response.json();
+                ordersCache = orders;
+
+                if (orders.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="9" class="no-data">No orders found.</td></tr>';
+                    return;
+                }
+
+                tableBody.innerHTML = '';
+                orders.forEach(order => {
+                    // Handle the new order structure with items array
+                    if (order.items && order.items.length > 0) {
+                        // Create a row for each item in the order
+                        order.items.forEach((item, index) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td>${order.id}${index > 0 ? `-${index + 1}` : ''}</td>
+                            <td>${order.customerName || '-'}</td>
+                            <td>${item.itemName || '-'}</td>
+                            <td>${item.quantity}</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>$${item.discount ? item.discount.toFixed(2) : '0.00'}</td>
+                            <td>$${item.total.toFixed(2)}</td>
+                            <td>${new Date(order.orderDate).toLocaleString()}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn edit" onclick="openEditModal(${order.id})">
+                                        <i class="fas fa-pen"></i> Edit
+                                    </button>
+                                    <button class="action-btn delete" onclick="openDeleteModal(${order.id})">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                    <button class="action-btn print" onclick="printBill(${order.id})">
+                                        <i class='fas fa-print'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        // Fallback for old structure or empty orders
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${order.id}</td>
+                        <td>${order.customerName || '-'}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>$${order.total ? order.total.toFixed(2) : '0.00'}</td>
+                        <td>${new Date(order.orderDate).toLocaleString()}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn edit" onclick="openEditModal(${order.id})">
+                                    <i class="fas fa-pen"></i> Edit
+                                </button>
+                                <button class="action-btn delete" onclick="openDeleteModal(${order.id})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                                <button class="action-btn print" onclick="printBill(${order.id})">
+                                    <i class='fas fa-print'></i> Print
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                        tableBody.appendChild(row);
+                    }
+                });
+            } else {
+                showToast('Failed to fetch orders.', 'error');
+                tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Failed to load orders.</td></tr>';
+            }
+        } catch (err) {
+            showToast('Network error. Please try again later.', 'error');
+            tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Network error.</td></tr>';
+        }
+    }
+
+    // Modal functions
+    function openEditModal(id) {
+        const order = ordersCache.find(o => o.id === id);
+        if (!order) return;
+
+        // Populate customer dropdown
+        const customerSelect = document.getElementById('editCustomerId');
+        customerSelect.innerHTML = '<option value="">Select a customer</option>';
+        customersCache.forEach(c => {
+            const option = document.createElement('option');
+            option.value = c.id;
+            option.textContent = `${c.name} (${c.accountNumber})`;
+            if (order.customerId && c.id === order.customerId) option.selected = true;
+            customerSelect.appendChild(option);
+        });
+
+        // Fill form fields
+        document.getElementById('editOrderId').value = order.id;
+        document.getElementById('editOrderDate').value = order.orderDate ? order.orderDate.slice(0, 16) : '';
+
+        // Populate order items
+        const container = document.getElementById('orderItemsContainer');
+        container.innerHTML = '';
+        
+        if (order.items && order.items.length > 0) {
+            order.items.forEach((item, index) => {
+                addOrderItem(item);
             });
         } else {
-            showToast('Failed to fetch orders.', 'error');
-            tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Failed to load orders.</td></tr>';
+            // Add at least one empty item
+            addOrderItem();
         }
-    } catch (err) {
-        showToast('Network error. Please try again later.', 'error');
-        tableBody.innerHTML = '<tr><td colspan="9" class="no-data">Network error.</td></tr>';
-    }
-}
 
-function openEditModal(id) {
-    const order = ordersCache.find(o => o.id === id);
-    if (!order) return;
-    // Populate dropdowns
-    const customerSelect = document.getElementById('editCustomerId');
-    customerSelect.innerHTML = '<option value="">Select a customer</option>';
-    customersCache.forEach(c => {
-        const option = document.createElement('option');
-        option.value = c.id;
-        option.textContent = `${c.name} (${c.accountNumber})`;
-        if (order.customer && c.id === order.customer.id) option.selected = true;
-        customerSelect.appendChild(option);
-    });
-    const itemSelect = document.getElementById('editItemId');
-    itemSelect.innerHTML = '<option value="">Select an item</option>';
-    itemsCache.forEach(i => {
-        const option = document.createElement('option');
-        option.value = i.id;
-        option.textContent = `${i.name} (${i.description})`;
-        if (order.item && i.id === order.item.id) option.selected = true;
-        itemSelect.appendChild(option);
-    });
-    document.getElementById('editOrderId').value = order.id;
-    document.getElementById('editQuantity').value = order.quantity;
-    document.getElementById('editPrice').value = order.price;
-    document.getElementById('editDiscount').value = order.discount;
-    document.getElementById('editOrderDate').value = order.orderDate ? order.orderDate.slice(0, 16) : '';
-    document.getElementById('editModal').style.display = 'flex';
-}
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
-}
-document.getElementById('editOrderForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const id = document.getElementById('editOrderId').value;
-    const updatedOrder = {
-        customerId: parseInt(document.getElementById('editCustomerId').value, 10),
-        itemId: parseInt(document.getElementById('editItemId').value, 10),
-        quantity: parseInt(document.getElementById('editQuantity').value, 10),
-        price: parseFloat(document.getElementById('editPrice').value),
-        discount: parseFloat(document.getElementById('editDiscount').value),
-        orderDate: new Date(document.getElementById('editOrderDate').value).toISOString()
-    };
-    try {
-        const response = await fetch(`${API_ORDERS}/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedOrder)
-        });
-        if (response.ok) {
-            showToast('Order updated successfully!', 'success');
-            closeEditModal();
-            fetchOrders();
+        // Show modal
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    // Function to add order item row
+    function addOrderItem(itemData = null) {
+        const container = document.getElementById('orderItemsContainer');
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'order-item-row';
+        itemDiv.style.cssText = 'border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; background: #f9f9f9;';
+        
+        const itemId = Date.now() + Math.random(); // Unique ID for this item row
+        
+        itemDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0;">Item ${container.children.length + 1}</h4>
+                <button type="button" onclick="removeOrderItem(this)" class="action-btn" style="background:#dc3545; padding: 5px 10px;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>Item</label>
+                    <select class="form-control item-select" required>
+                        <option value="">Select an item</option>
+                        ${itemsCache.map(item => `<option value="${item.id}" ${itemData && itemData.itemId === item.id ? 'selected' : ''}>${item.name} (${item.description || 'No description'})</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" class="form-control item-quantity" min="1" value="${itemData ? itemData.quantity : 1}" required>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" class="form-control item-price" min="0" step="0.01" value="${itemData ? itemData.price.toFixed(2) : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Discount</label>
+                    <input type="number" class="form-control item-discount" min="0" step="0.01" value="${itemData ? (itemData.discount ? itemData.discount.toFixed(2) : '0.00') : '0.00'}" required>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(itemDiv);
+    }
+
+    // Function to remove order item row
+    function removeOrderItem(button) {
+        const container = document.getElementById('orderItemsContainer');
+        if (container.children.length > 1) {
+            button.closest('.order-item-row').remove();
         } else {
-            const errorData = await response.json();
-            showToast(errorData.message || 'Failed to update order.', 'error');
+            showToast('At least one item is required.', 'error');
         }
-    } catch (err) {
-        showToast('Network error. Please try again later.', 'error');
     }
-});
 
-let deleteOrderId = null;
-function openDeleteModal(id) {
-    deleteOrderId = id;
-    document.getElementById('deleteModal').style.display = 'flex';
-}
-function closeDeleteModal() {
-    document.getElementById('deleteModal').style.display = 'none';
-    deleteOrderId = null;
-}
-document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
-    if (!deleteOrderId) return;
-    try {
-        const response = await fetch(`${API_ORDERS}/${deleteOrderId}`, {
-            method: 'DELETE'
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    // Edit form submission
+    document.getElementById('editOrderForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const id = document.getElementById('editOrderId').value;
+        const customerId = parseInt(document.getElementById('editCustomerId').value, 10);
+        
+        // Format date in a way that's compatible with the backend
+        const dateInput = document.getElementById('editOrderDate').value;
+        const orderDate = dateInput ? new Date(dateInput).toISOString().slice(0, 19) : new Date().toISOString().slice(0, 19);
+
+        // Collect all order items
+        const itemRows = document.querySelectorAll('.order-item-row');
+        const items = [];
+
+        itemRows.forEach(row => {
+            const itemSelect = row.querySelector('.item-select');
+            const quantityInput = row.querySelector('.item-quantity');
+            const priceInput = row.querySelector('.item-price');
+            const discountInput = row.querySelector('.item-discount');
+
+            if (itemSelect.value && quantityInput.value && priceInput.value) {
+                items.push({
+                    itemId: parseInt(itemSelect.value, 10),
+                    quantity: parseInt(quantityInput.value, 10),
+                    price: parseFloat(priceInput.value),
+                    discount: parseFloat(discountInput.value) || 0
+                });
+            }
         });
-        if (response.ok) {
-            showToast('Order deleted successfully!', 'success');
-            closeDeleteModal();
-            fetchOrders();
-        } else {
-            showToast('Failed to delete order.', 'error');
-        }
-    } catch (err) {
-        showToast('Network error. Please try again later.', 'error');
-    }
-});
 
-function printBill(orderId) {
-    const order = ordersCache.find(o => o.id === orderId);
-    if (!order) return;
-    const billWindow = window.open('', '', 'width=600,height=700');
-    billWindow.document.write(`
+        if (items.length === 0) {
+            showToast('At least one item is required.', 'error');
+            return;
+        }
+
+        const updatedOrder = {
+            customerId: customerId,
+            orderDate: orderDate,
+            items: items
+        };
+
+        console.log('Sending update data:', updatedOrder);
+        console.log('Update URL:', `${API_ORDERS}/${id}`);
+
+        try {
+            const response = await fetch(`${API_ORDERS}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedOrder)
+            });
+
+            console.log('Update response status:', response.status);
+            console.log('Update response ok:', response.ok);
+
+            if (response.ok) {
+                showToast('Order updated successfully!', 'success');
+                closeEditModal();
+                fetchOrders();
+            } else {
+                console.log('Update failed with status:', response.status);
+                try {
+                    const errorData = await response.json();
+                    console.log('Error data:', errorData);
+                    showToast(errorData.message || `Failed to update order. Status: ${response.status}`, 'error');
+                } catch (parseError) {
+                    console.log('Could not parse error response');
+                    showToast(`Failed to update order. Status: ${response.status}`, 'error');
+                }
+            }
+        } catch (err) {
+            showToast('Network error. Please try again later.', 'error');
+        }
+    });
+
+    // Delete order functions
+    let deleteOrderId = null;
+
+    function openDeleteModal(id) {
+        deleteOrderId = id;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+        deleteOrderId = null;
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+        if (!deleteOrderId) return;
+
+        try {
+            const response = await fetch(`${API_ORDERS}/${deleteOrderId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                showToast('Order deleted successfully!', 'success');
+                closeDeleteModal();
+                fetchOrders();
+            } else {
+                showToast('Failed to delete order.', 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again later.', 'error');
+        }
+    });
+
+    // Print bill function
+    function printBill(orderId) {
+        const order = ordersCache.find(o => o.id === orderId);
+        if (!order) return;
+
+        const billWindow = window.open('', '', 'width=600,height=700');
+        
+        // Generate items HTML
+        let itemsHtml = '';
+        let grandTotal = 0;
+        
+        if (order.items && order.items.length > 0) {
+            order.items.forEach(item => {
+                itemsHtml += `
+                    <tr>
+                        <td>${item.itemName || '-'}</td>
+                        <td>${item.description || '-'}</td>
+                        <td class="right">$${item.price.toFixed(2)}</td>
+                        <td class="right">${item.quantity}</td>
+                        <td class="right">$${item.discount ? item.discount.toFixed(2) : '0.00'}</td>
+                        <td class="right">$${item.total.toFixed(2)}</td>
+                    </tr>
+                `;
+                grandTotal += item.total;
+            });
+        } else {
+            itemsHtml = `
+                <tr>
+                    <td>-</td>
+                    <td>-</td>
+                    <td class="right">-</td>
+                    <td class="right">-</td>
+                    <td class="right">-</td>
+                    <td class="right">-</td>
+                </tr>
+            `;
+            grandTotal = order.total || 0;
+        }
+
+        billWindow.document.write(`
         <html>
         <head>
             <title>Order Bill #${order.id}</title>
@@ -339,9 +759,8 @@ function printBill(orderId) {
                 <div>${new Date(order.orderDate).toLocaleString()}</div>
             </div>
             <div class="bill-section">
-                <span class="bill-label">Customer:</span> ${order.customer ? order.customer.name + ' (' + order.customer.accountNumber + ')' : '-'}<br>
-                <span class="bill-label">Address:</span> ${order.customer ? order.customer.address : '-'}<br>
-                <span class="bill-label">Telephone:</span> ${order.customer ? order.customer.telephone : '-'}
+                <span class="bill-label">Customer:</span> ${order.customerName || '-'}<br>
+                <span class="bill-label">Customer ID:</span> ${order.customerId || '-'}
             </div>
             <table>
                 <thead>
@@ -355,31 +774,25 @@ function printBill(orderId) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>${order.item ? order.item.name : '-'}</td>
-                        <td>${order.item ? order.item.description : '-'}</td>
-                        <td class="right">${order.price.toFixed(2)}</td>
-                        <td class="right">${order.quantity}</td>
-                        <td class="right">${order.discount.toFixed(2)}</td>
-                        <td class="right">${order.total.toFixed(2)}</td>
-                    </tr>
+                    ${itemsHtml}
                 </tbody>
             </table>
             <div class="bill-section" style="text-align:right;margin-top:30px;">
-                <span class="bill-label">Grand Total: </span> <span style="font-size:1.2em;">${order.total.toFixed(2)}</span>
+                <span class="bill-label">Grand Total: </span> <span style="font-size:1.2em;">$${grandTotal.toFixed(2)}</span>
             </div>
             <div style="margin-top:40px;text-align:center;color:#888;font-size:0.95em;">Thank you for your purchase!</div>
             <script>window.print();<\/script>
         </body>
         </html>
     `);
-    billWindow.document.close();
-}
+        billWindow.document.close();
+    }
 
-window.addEventListener('DOMContentLoaded', async () => {
-    await fetchCustomersAndItems();
-    await fetchOrders();
-});
+    // Initialize the page
+    window.addEventListener('DOMContentLoaded', async () => {
+        await fetchCustomersAndItems();
+        await fetchOrders();
+    });
 </script>
 </body>
-</html> 
+</html>

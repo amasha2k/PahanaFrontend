@@ -303,6 +303,11 @@
                     <i class="fas fa-clipboard-list"></i> Manage Orders
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="help.html" class="nav-link">
+                    <i class="fas fa-question-circle"></i> Help
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -343,7 +348,7 @@
                 </div>
                 <div class="form-group" style="margin-bottom:20px;">
                     <label for="unitsConsumed" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Units Consumed</label>
-                    <input type="number" id="unitsConsumed" name="unitsConsumed" value="0" min="0" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
+                    <input type="number" id="unitsConsumed" name="unitsConsumed" value="1" min="0" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;" readonly>
                     <div class="error-message" id="unitsConsumedError" style="color:#dc3545;font-size:0.95em;display:none;"></div>
                 </div>
                 <button type="submit" class="btn" style="background-color:#3498db;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px;display:block;width:100%;margin-top:20px;">Add Customer</button>
@@ -426,54 +431,49 @@
                     showToast('Network error. Please try again later.', 'error');
                 }
             });
+
+
+
         </script>
-        <!-- Customer Information Fetch Section -->
-        <div class="container" style="max-width:600px;margin:40px auto 0 auto;background:white;padding:25px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1);">
-            <h1 style="text-align:center;color:#2c3e50;margin-bottom:25px;font-size:2rem;">Customer Information</h1>
-            <form id="customerForm">
-                <div class="form-group" style="margin-bottom:20px;">
-                    <label for="accountNumber" style="display:block;margin-bottom:5px;font-weight:600;color:#2c3e50;">Account Number:</label>
-                    <input type="text" id="accountNumber" name="accountNumber" placeholder="Enter account number" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;font-size:16px;box-sizing:border-box;">
-                </div>
-                <button type="button" class="btn" onclick="fetchCustomerData()" style="background-color:#3498db;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px;display:block;width:100%;margin-top:20px;">Fetch Customer Data</button>
-            </form>
-            <div class="result" id="resultContainer" style="display:none;margin-top:30px;padding:15px;border:1px solid #ddd;border-radius:4px;background-color:#f9f9f9;">
-                <h2 style="margin-top:0;color:#2c3e50;border-bottom:1px solid #eee;padding-bottom:10px;">Customer Details</h2>
-                <div class="result-item" style="margin-bottom:10px;"><span class="result-label" style="font-weight:600;color:#2c3e50;">Account Number:</span> <span id="displayAccountNumber"></span></div>
-                <div class="result-item" style="margin-bottom:10px;"><span class="result-label" style="font-weight:600;color:#2c3e50;">Name:</span> <span id="displayName"></span></div>
-                <div class="result-item" style="margin-bottom:10px;"><span class="result-label" style="font-weight:600;color:#2c3e50;">Address:</span> <span id="displayAddress"></span></div>
-                <div class="result-item" style="margin-bottom:10px;"><span class="result-label" style="font-weight:600;color:#2c3e50;">Telephone:</span> <span id="displayTelephone"></span></div>
-                <div class="result-item" style="margin-bottom:10px;"><span class="result-label" style="font-weight:600;color:#2c3e50;">Units Consumed:</span> <span id="displayUnitsConsumed"></span></div>
-            </div>
-        </div>
 
         <script>
-            async function fetchCustomerData() {
-                const accountNumber = document.getElementById('accountNumber').value.trim();
-                if (!accountNumber) {
-                    alert("Please enter an account number");
-                    return;
-                }
+            const API_LATEST_CUSTOMER = "http://localhost:8080/api/customers/latest";
+
+            function incrementCustomerId(latestId) {
+                // Extract letters and numbers
+                const prefix = latestId.match(/[A-Za-z]+/)[0];         // "CUST"
+                const numberPart = latestId.match(/\d+/)[0];           // "001"
+                const nextNumber = parseInt(numberPart, 10) + 1;       // 2
+                const paddedNumber = String(nextNumber).padStart(numberPart.length, '0'); // "002"
+                return prefix + paddedNumber;                          // "CUST002"
+            }
+
+            async function autofillAccountNumber() {
                 try {
-                    const response = await fetch(`${API_CUSTOMERS}/${encodeURIComponent(accountNumber)}`);
+                    const response = await fetch(API_LATEST_CUSTOMER);
                     if (response.ok) {
-                        const customerData = await response.json();
-                        document.getElementById('displayAccountNumber').textContent = customerData.accountNumber;
-                        document.getElementById('displayName').textContent = customerData.name;
-                        document.getElementById('displayAddress').textContent = customerData.address;
-                        document.getElementById('displayTelephone').textContent = customerData.telephone;
-                        document.getElementById('displayUnitsConsumed').textContent = customerData.unitsConsumed;
-                        document.getElementById('resultContainer').style.display = 'block';
+                        const data = await response.json();
+                        if (data && data.latestId) {
+                            const nextId = incrementCustomerId(data.latestId);
+                            document.getElementById('accountNumber').value = nextId;
+                        } else {
+                            showToast("Invalid response from server", "error");
+                        }
                     } else {
-                        alert("Customer not found with account number: " + accountNumber);
-                        document.getElementById('resultContainer').style.display = 'none';
+                        showToast("Failed to fetch latest account number", "error");
                     }
-                } catch (err) {
-                    alert("Network error. Please try again later.");
-                    document.getElementById('resultContainer').style.display = 'none';
+                } catch (error) {
+                    showToast("Error connecting to the server", "error");
                 }
             }
+
+            // Auto-fill on page load
+            document.addEventListener("DOMContentLoaded", () => {
+                autofillAccountNumber();
+            });
         </script>
+
+
     </div>
 
 

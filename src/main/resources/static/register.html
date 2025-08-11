@@ -71,6 +71,10 @@
         </div>
     </div>
     <script>
+        // API Configuration
+        const API_BASE_URL = "http://localhost:8080";
+        const API_AUTH_REGISTER = `${API_BASE_URL}/api/auth/register`;
+        
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const messageDiv = document.getElementById('message');
@@ -106,6 +110,7 @@
             } catch (err) {
                 messageDiv.textContent = 'Network error. Please try again later.';
                 messageDiv.classList.add('error');
+                console.log(err)
             }
         });
     </script>
